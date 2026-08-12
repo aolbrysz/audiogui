@@ -10,7 +10,8 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("AudioGUI")
         self.resize(1366, 768)
-        self.setMinimumSize(800, 550)
+        self.setMinimumSize(1024, 768)
+        self.setMaximumSize(1920, 1080)
 
         layout = QFormLayout()
         layout.setSpacing(30)
@@ -27,9 +28,9 @@ class MainWindow(QMainWindow):
         title_length_layout.setSpacing(20)
 
         self.title_length = QLabel("Title: ")
-        self.title_length.setStyleSheet("font-size: 20px;")
+        self.title_length.setStyleSheet("font-size: 18px;")
         self.title_length.setMinimumWidth(100)
-        self.title_length.setMaximumWidth(400)
+        self.title_length.setMaximumWidth(600)
 
         self.title_input = QLineEdit()
         self.title_input.setMinimumWidth(300)
@@ -48,9 +49,9 @@ class MainWindow(QMainWindow):
         artist_layout.setSpacing(20)
 
         self.artist = QLabel("Artist: ")
-        self.artist.setStyleSheet("font-size: 20px;")
+        self.artist.setStyleSheet("font-size: 18px;")
         self.artist.setMinimumWidth(100)
-        self.artist.setMaximumWidth(400)
+        self.artist.setMaximumWidth(600)
 
         self.artist_input = QLineEdit()
         self.artist_input.setMinimumWidth(300)
@@ -69,9 +70,9 @@ class MainWindow(QMainWindow):
         album_year_layout.setSpacing(20)
 
         self.album_year = QLabel("Album: ")
-        self.album_year.setStyleSheet("font-size: 20px;")
+        self.album_year.setStyleSheet("font-size: 18px;")
         self.album_year.setMinimumWidth(100)
-        self.album_year.setMaximumWidth(400)
+        self.album_year.setMaximumWidth(600)
 
         self.album_input = QLineEdit()
         self.album_input.setMinimumWidth(300)
@@ -101,9 +102,9 @@ class MainWindow(QMainWindow):
         disc_layout.setContentsMargins(0, 0, 0, 0)
 
         self.disc = QLabel("Disc ")
-        self.disc.setStyleSheet("font-size: 20px;")
+        self.disc.setStyleSheet("font-size: 18px;")
         self.disc.setMinimumWidth(100)
-        self.disc.setMaximumWidth(400)
+        self.disc.setMaximumWidth(600)
 
         self.disc_number_input = QLineEdit()
         self.disc_number_input.setMinimumWidth(200)
@@ -134,8 +135,8 @@ class MainWindow(QMainWindow):
 
         self.track = QLabel("Track ")
         self.track.setMinimumWidth(100)
-        self.track.setMaximumWidth(400)
-        self.track.setStyleSheet("font-size: 20px;")
+        self.track.setMaximumWidth(600)
+        self.track.setStyleSheet("font-size: 18px;")
 
         self.track_number_input = QLineEdit()
         self.track_number_input.setMinimumWidth(200)
@@ -161,7 +162,7 @@ class MainWindow(QMainWindow):
 
         # Current file
         self.current_file = QLabel("Choose a file to proceed.")
-        self.current_file.setStyleSheet("font-size: 20px;")
+        self.current_file.setStyleSheet("font-size: 18px;")
         layout.addRow(self.current_file)
 
         # "Choose file" Button
@@ -186,16 +187,25 @@ class MainWindow(QMainWindow):
             self.current_file.setText(f"File: {file_path[0]}")
 
             # Get file metadata
-            self.audio = mutagen.File(file_path[0])
-            self.audio_title = self.audio.get("title", "Unknown Title")
+            self.audio = mutagen.File(file_path[0], easy = True)
+
+            self.audio_title = self.audio.get("title", ["Unknown Title"])
+
             self.minutes, self.seconds = divmod(self.audio.info.length, 60)
-            self.audio_artist = self.audio.get("artist", "Unknown Artist")
-            self.audio_album = self.audio.get("album", "Unknown Album")
-            self.audio_year = self.audio.get("date", "Unknown Year")
-            self.audio_track_number = self.audio.get("tracknumber", "Unknown")
-            self.audio_track_total = self.audio.get("tracktotal", "Unknown")
-            self.audio_disc_number = self.audio.get("discnumber", "Unknown")
-            self.audio_disc_total = self.audio.get("disctotal", "Unknown")
+
+            self.audio_artist = self.audio.get("artist", ["Unknown Artist"])
+
+            self.audio_album = self.audio.get("album", ["Unknown Album"])
+
+            self.audio_year = self.audio.get("date", ["Unknown Year"])
+
+            self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])
+
+            self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])
+
+            self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])
+
+            self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])
 
             # Update labels
             if self.minutes < 10:
@@ -205,7 +215,10 @@ class MainWindow(QMainWindow):
 
             self.artist.setText(f"Artist: {self.audio_artist[0]}")
 
-            self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0]})")
+            if self.audio_year[0] == "Unknown Year":
+                self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0]})")
+            else:
+                self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0][:4]})")
 
             if self.audio_disc_number == "Unknown" or self.audio_disc_total == "Unknown":
                 pass
@@ -252,7 +265,7 @@ class MainWindow(QMainWindow):
             self.audio.save()
 
             self.audio_year = self.audio["date"]
-            self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0]})")
+            self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0][:4]})")
 
     def change_disc_number(self):
         if (self.disc_number_input.text() != "" and self.disc_number_input.text() != "Edit disc number:" and self.audio is not None and self.audio_disc_total != "Unknown"):
