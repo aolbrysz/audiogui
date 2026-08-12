@@ -41,10 +41,10 @@ class MainWindow(QMainWindow):
         self.title_length = QLabel("Title: ")
         self.title_length.setStyleSheet("font-size: 18px;")
         self.title_length.setMinimumWidth(100)
-        self.title_length.setMaximumWidth(600)
 
         self.title_input = QLineEdit()
-        self.title_input.setMinimumWidth(300)
+        self.title_input.setMinimumWidth(200)
+        self.title_input.setMaximumWidth(600)
         self.title_input.setPlaceholderText("Edit title:")
         title_length_layout.addWidget(self.title_input)
 
@@ -62,10 +62,10 @@ class MainWindow(QMainWindow):
         self.artist = QLabel("Artist: ")
         self.artist.setStyleSheet("font-size: 18px;")
         self.artist.setMinimumWidth(100)
-        self.artist.setMaximumWidth(600)
 
         self.artist_input = QLineEdit()
-        self.artist_input.setMinimumWidth(300)
+        self.artist_input.setMinimumWidth(200)
+        self.artist_input.setMaximumWidth(600)
         self.artist_input.setPlaceholderText("Edit artist:")
         artist_layout.addWidget(self.artist_input)
 
@@ -83,10 +83,10 @@ class MainWindow(QMainWindow):
         self.album_year = QLabel("Album: ")
         self.album_year.setStyleSheet("font-size: 18px;")
         self.album_year.setMinimumWidth(100)
-        self.album_year.setMaximumWidth(600)
 
         self.album_input = QLineEdit()
-        self.album_input.setMinimumWidth(300)
+        self.album_input.setMinimumWidth(200)
+        self.album_input.setMaximumWidth(400)
         self.album_input.setPlaceholderText("Edit album:")
         album_year_layout.addWidget(self.album_input)
 
@@ -97,6 +97,7 @@ class MainWindow(QMainWindow):
 
         self.year_input = QLineEdit()
         self.year_input.setMinimumWidth(100)
+        self.year_input.setMaximumWidth(200)
         self.year_input.setPlaceholderText("Edit year:")
         album_year_layout.addWidget(self.year_input)
 
@@ -115,10 +116,10 @@ class MainWindow(QMainWindow):
         self.disc = QLabel("Disc ")
         self.disc.setStyleSheet("font-size: 18px;")
         self.disc.setMinimumWidth(100)
-        self.disc.setMaximumWidth(600)
 
         self.disc_number_input = QLineEdit()
-        self.disc_number_input.setMinimumWidth(200)
+        self.disc_number_input.setMinimumWidth(100)
+        self.disc_number_input.setMaximumWidth(200)
         self.disc_number_input.setPlaceholderText("Edit disc number:")
         disc_layout.addWidget(self.disc_number_input)
 
@@ -128,7 +129,8 @@ class MainWindow(QMainWindow):
         disc_layout.addWidget(self.disc_number_button)
 
         self.disc_total_input = QLineEdit()
-        self.disc_total_input.setMinimumWidth(200)
+        self.disc_total_input.setMinimumWidth(100)
+        self.disc_total_input.setMaximumWidth(200)
         self.disc_total_input.setPlaceholderText("Edit disc total:")
         disc_layout.addWidget(self.disc_total_input)
 
@@ -146,11 +148,11 @@ class MainWindow(QMainWindow):
 
         self.track = QLabel("Track ")
         self.track.setMinimumWidth(100)
-        self.track.setMaximumWidth(600)
         self.track.setStyleSheet("font-size: 18px;")
 
         self.track_number_input = QLineEdit()
-        self.track_number_input.setMinimumWidth(200)
+        self.track_number_input.setMinimumWidth(100)
+        self.track_number_input.setMaximumWidth(200)
         self.track_number_input.setPlaceholderText("Edit track number:")
         track_layout.addWidget(self.track_number_input)
 
@@ -160,7 +162,8 @@ class MainWindow(QMainWindow):
         track_layout.addWidget(self.track_number_button)
 
         self.track_total_input = QLineEdit()
-        self.track_total_input.setMinimumWidth(200)
+        self.track_total_input.setMinimumWidth(100)
+        self.track_total_input.setMaximumWidth(200)
         self.track_total_input.setPlaceholderText("Edit track total:")
         track_layout.addWidget(self.track_total_input)
 
