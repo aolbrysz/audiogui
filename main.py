@@ -10,20 +10,31 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("AudioGUI")
         self.resize(1366, 768)
-        self.setMinimumSize(1024, 768)
+        self.setMinimumSize(800, 600)
         self.setMaximumSize(1920, 1080)
 
-        layout = QFormLayout()
-        layout.setSpacing(30)
+        self.layout = QFormLayout()
+        self.layout.setSpacing(30)
 
         self.audio = None
 
         # "Welcome to AudioGUI" Header
         self.header = QLabel("<h1>Welcome to AudioGUI!</h1>")
         self.header.setFixedWidth(500)
-        layout.addRow(self.header)
+        self.layout.addRow(self.header)
 
-        # Title & Length
+        self.setup_title_length_layout()
+        self.setup_artist_layout()
+        self.setup_album_year_layout()
+        self.setup_disc_layout()
+        self.setup_track_layout()
+        self.setup_file_buttons()
+
+        window = QWidget()
+        window.setLayout(self.layout)
+        self.setCentralWidget(window)
+
+    def setup_title_length_layout(self):
         title_length_layout = QHBoxLayout()
         title_length_layout.setSpacing(20)
 
@@ -42,9 +53,9 @@ class MainWindow(QMainWindow):
         self.title_button.setFixedWidth(80)
         title_length_layout.addWidget(self.title_button)
 
-        layout.addRow(self.title_length, title_length_layout)
+        self.layout.addRow(self.title_length, title_length_layout)
 
-        # Artist
+    def setup_artist_layout(self):
         artist_layout = QHBoxLayout()
         artist_layout.setSpacing(20)
 
@@ -63,9 +74,9 @@ class MainWindow(QMainWindow):
         self.artist_button.setFixedWidth(80)
         artist_layout.addWidget(self.artist_button)
 
-        layout.addRow(self.artist, artist_layout)
+        self.layout.addRow(self.artist, artist_layout)
 
-        # Album & Year
+    def setup_album_year_layout(self):
         album_year_layout = QHBoxLayout()
         album_year_layout.setSpacing(20)
 
@@ -94,9 +105,9 @@ class MainWindow(QMainWindow):
         self.year_button.setFixedWidth(80)
         album_year_layout.addWidget(self.year_button)
 
-        layout.addRow(self.album_year, album_year_layout)
+        self.layout.addRow(self.album_year, album_year_layout)
 
-        # Disc info
+    def setup_disc_layout(self):
         disc_layout = QHBoxLayout()
         disc_layout.setSpacing(20)
         disc_layout.setContentsMargins(0, 0, 0, 0)
@@ -126,9 +137,9 @@ class MainWindow(QMainWindow):
         self.disc_total_button.setFixedWidth(80)
         disc_layout.addWidget(self.disc_total_button)
 
-        layout.addRow(self.disc, disc_layout)
+        self.layout.addRow(self.disc, disc_layout)
 
-        # Track info
+    def setup_track_layout(self):
         track_layout = QHBoxLayout()
         track_layout.setSpacing(20)
         track_layout.setContentsMargins(0, 0, 0, 0)
@@ -158,22 +169,16 @@ class MainWindow(QMainWindow):
         self.track_total_button.setFixedWidth(80)
         track_layout.addWidget(self.track_total_button)
 
-        layout.addRow(self.track, track_layout)
+        self.layout.addRow(self.track, track_layout)
 
-        # Current file
+    def setup_file_buttons(self):
         self.current_file = QLabel("Choose a file to proceed.")
         self.current_file.setStyleSheet("font-size: 18px;")
-        layout.addRow(self.current_file)
+        self.layout.addRow(self.current_file)
 
-        # "Choose file" Button
         self.choose_button = QPushButton("Choose file")
         self.choose_button.clicked.connect(self.choose_audio_file)
-        layout.addRow("Choose audio file:", self.choose_button)
-
-        # Setup
-        window = QWidget()
-        window.setLayout(layout)
-        self.setCentralWidget(window)
+        self.layout.addRow("Choose audio file:", self.choose_button)
 
     def choose_audio_file(self):
         file_path = QFileDialog.getOpenFileName(
@@ -188,23 +193,14 @@ class MainWindow(QMainWindow):
 
             # Get file metadata
             self.audio = mutagen.File(file_path[0], easy = True)
-
             self.audio_title = self.audio.get("title", ["Unknown Title"])
-
             self.minutes, self.seconds = divmod(self.audio.info.length, 60)
-
             self.audio_artist = self.audio.get("artist", ["Unknown Artist"])
-
             self.audio_album = self.audio.get("album", ["Unknown Album"])
-
             self.audio_year = self.audio.get("date", ["Unknown Year"])
-
             self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])
-
             self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])
-
             self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])
-
             self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])
 
             # Update labels
