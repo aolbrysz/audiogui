@@ -1,8 +1,9 @@
 import sys
 import mutagen
 from mutagen.flac import FLAC
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QFormLayout, QHBoxLayout, QSlider, QFileDialog, QLineEdit
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QFormLayout, QVBoxLayout, QHBoxLayout, QSlider, QFileDialog, QLineEdit
 from PyQt6.QtCore import QSize
+from PyQt6.QtGui import QPixmap
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -13,16 +14,17 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(800, 600)
         self.setMaximumSize(1920, 1080)
 
-        self.layout = QFormLayout()
-        self.layout.setSpacing(30)
+        main_layout = QHBoxLayout()
+
+        # Metadata editor: text
+        self.editor_layout = QFormLayout()
+        self.editor_layout.setSpacing(30)
 
         self.audio = None
 
-        # "Welcome to AudioGUI" Header
         self.header = QLabel("<h1>Welcome to AudioGUI!</h1>")
         self.header.setFixedWidth(500)
-        self.layout.addRow(self.header)
-
+        self.editor_layout.addRow(self.header)
         self.setup_title_length_layout()
         self.setup_artist_layout()
         self.setup_album_year_layout()
@@ -30,8 +32,26 @@ class MainWindow(QMainWindow):
         self.setup_track_layout()
         self.setup_file_buttons()
 
+        self.thumbnail_layout = QVBoxLayout()
+        self.thumbnail_layout.setSpacing(20)
+
+        # Metadata editor: thumbnail
+        thumbnail_label = QLabel()
+        thumbnail_pixmap = QPixmap('clippy.jpeg')
+        thumbnail_label.setFixedSize(300, 300)
+        thumbnail_label.setScaledContents(True)
+        thumbnail_label.setPixmap(thumbnail_pixmap)
+        self.thumbnail_layout.addWidget(thumbnail_label)
+
+        self.thumbnail_choose_button = QPushButton("Choose new thumbnail")
+        self.thumbnail_layout.addWidget(self.thumbnail_choose_button)
+
+        # Window
+        main_layout.addLayout(self.editor_layout)
+        main_layout.addLayout(self.thumbnail_layout)
+
         window = QWidget()
-        window.setLayout(self.layout)
+        window.setLayout(main_layout)
         self.setCentralWidget(window)
 
     def setup_title_length_layout(self):
@@ -53,7 +73,7 @@ class MainWindow(QMainWindow):
         self.title_button.setFixedWidth(80)
         title_length_layout.addWidget(self.title_button)
 
-        self.layout.addRow(self.title_length, title_length_layout)
+        self.editor_layout.addRow(self.title_length, title_length_layout)
 
     def setup_artist_layout(self):
         artist_layout = QHBoxLayout()
@@ -74,7 +94,7 @@ class MainWindow(QMainWindow):
         self.artist_button.setFixedWidth(80)
         artist_layout.addWidget(self.artist_button)
 
-        self.layout.addRow(self.artist, artist_layout)
+        self.editor_layout.addRow(self.artist, artist_layout)
 
     def setup_album_year_layout(self):
         album_year_layout = QHBoxLayout()
@@ -96,8 +116,8 @@ class MainWindow(QMainWindow):
         album_year_layout.addWidget(self.album_button)
 
         self.year_input = QLineEdit()
-        self.year_input.setMinimumWidth(100)
-        self.year_input.setMaximumWidth(200)
+        self.year_input.setMinimumWidth(50)
+        self.year_input.setMaximumWidth(100)
         self.year_input.setPlaceholderText("Edit year:")
         album_year_layout.addWidget(self.year_input)
 
@@ -106,7 +126,7 @@ class MainWindow(QMainWindow):
         self.year_button.setFixedWidth(80)
         album_year_layout.addWidget(self.year_button)
 
-        self.layout.addRow(self.album_year, album_year_layout)
+        self.editor_layout.addRow(self.album_year, album_year_layout)
 
     def setup_disc_layout(self):
         disc_layout = QHBoxLayout()
@@ -139,7 +159,7 @@ class MainWindow(QMainWindow):
         self.disc_total_button.setFixedWidth(80)
         disc_layout.addWidget(self.disc_total_button)
 
-        self.layout.addRow(self.disc, disc_layout)
+        self.editor_layout.addRow(self.disc, disc_layout)
 
     def setup_track_layout(self):
         track_layout = QHBoxLayout()
@@ -172,16 +192,16 @@ class MainWindow(QMainWindow):
         self.track_total_button.setFixedWidth(80)
         track_layout.addWidget(self.track_total_button)
 
-        self.layout.addRow(self.track, track_layout)
+        self.editor_layout.addRow(self.track, track_layout)
 
     def setup_file_buttons(self):
         self.current_file = QLabel("Choose a file to proceed.")
         self.current_file.setStyleSheet("font-size: 18px;")
-        self.layout.addRow(self.current_file)
+        self.editor_layout.addRow(self.current_file)
 
         self.choose_button = QPushButton("Choose file")
         self.choose_button.clicked.connect(self.choose_audio_file)
-        self.layout.addRow("Choose audio file:", self.choose_button)
+        self.editor_layout.addRow("Choose audio file:", self.choose_button)
 
     def choose_audio_file(self):
         file_path = QFileDialog.getOpenFileName(
