@@ -8,9 +8,11 @@ A minimalist desktop application built in Python (PyQt6) for reading and editing
 - View and edit metadata tags (title, artist, album) of .flac and .wav files
 
 ## Roadmap
-- Support for .mp3 and other formats
-- View and edit thumbnails / album covers
-- Built-in file system explorer
+- Support for .mp3 and other formats (in progress)
+- View and edit thumbnails / album covers (in progress)
+- Implement built-in file system explorer
+- Replace placeholder image
+- Increase aesthetic value of app
 
 ## Tech Stack
 - Python 3
