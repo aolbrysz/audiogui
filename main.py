@@ -70,7 +70,8 @@ class MainWindow(QMainWindow):
 
         self.title_button = QPushButton("Update")
         self.title_button.clicked.connect(self.change_title)
-        self.title_button.setFixedWidth(80)
+        self.title_button.setMinimumWidth(50)
+        self.title_button.setMaximumWidth(80)
         title_length_layout.addWidget(self.title_button)
 
         self.editor_layout.addRow(self.title_length, title_length_layout)
@@ -91,14 +92,15 @@ class MainWindow(QMainWindow):
 
         self.artist_button = QPushButton("Update")
         self.artist_button.clicked.connect(self.change_artist)
-        self.artist_button.setFixedWidth(80)
+        self.artist_button.setMinimumWidth(50)
+        self.artist_button.setMaximumWidth(80)
         artist_layout.addWidget(self.artist_button)
 
         self.editor_layout.addRow(self.artist, artist_layout)
 
     def setup_album_year_layout(self):
         album_year_layout = QHBoxLayout()
-        album_year_layout.setSpacing(20)
+        album_year_layout.setSpacing(10)
 
         self.album_year = QLabel("Album: ")
         self.album_year.setStyleSheet("font-size: 18px;")
@@ -112,7 +114,8 @@ class MainWindow(QMainWindow):
 
         self.album_button = QPushButton("Update")
         self.album_button.clicked.connect(self.change_album)
-        self.album_button.setFixedWidth(80)
+        self.album_button.setMinimumWidth(50)
+        self.album_button.setMaximumWidth(80)
         album_year_layout.addWidget(self.album_button)
 
         self.year_input = QLineEdit()
@@ -123,7 +126,8 @@ class MainWindow(QMainWindow):
 
         self.year_button = QPushButton("Update")
         self.year_button.clicked.connect(self.change_year)
-        self.year_button.setFixedWidth(80)
+        self.year_button.setMinimumWidth(50)
+        self.year_button.setMaximumWidth(80)
         album_year_layout.addWidget(self.year_button)
 
         self.editor_layout.addRow(self.album_year, album_year_layout)
@@ -145,7 +149,8 @@ class MainWindow(QMainWindow):
 
         self.disc_number_button = QPushButton("Update")
         self.disc_number_button.clicked.connect(self.change_disc_number)
-        self.disc_number_button.setFixedWidth(80)
+        self.disc_number_button.setMinimumWidth(50)
+        self.disc_number_button.setMaximumWidth(80)
         disc_layout.addWidget(self.disc_number_button)
 
         self.disc_total_input = QLineEdit()
@@ -156,7 +161,8 @@ class MainWindow(QMainWindow):
 
         self.disc_total_button = QPushButton("Update")
         self.disc_total_button.clicked.connect(self.change_disc_total)
-        self.disc_total_button.setFixedWidth(80)
+        self.disc_total_button.setMinimumWidth(50)
+        self.disc_total_button.setMaximumWidth(80)
         disc_layout.addWidget(self.disc_total_button)
 
         self.editor_layout.addRow(self.disc, disc_layout)
@@ -178,7 +184,8 @@ class MainWindow(QMainWindow):
 
         self.track_number_button = QPushButton("Update")
         self.track_number_button.clicked.connect(self.change_track_number)
-        self.track_number_button.setFixedWidth(80)
+        self.track_number_button.setMinimumWidth(50)
+        self.track_number_button.setMaximumWidth(80)
         track_layout.addWidget(self.track_number_button)
 
         self.track_total_input = QLineEdit()
@@ -189,7 +196,8 @@ class MainWindow(QMainWindow):
 
         self.track_total_button = QPushButton("Update")
         self.track_total_button.clicked.connect(self.change_track_total)
-        self.track_total_button.setFixedWidth(80)
+        self.track_total_button.setMinimumWidth(50)
+        self.track_total_button.setMaximumWidth(80)
         track_layout.addWidget(self.track_total_button)
 
         self.editor_layout.addRow(self.track, track_layout)
@@ -197,10 +205,12 @@ class MainWindow(QMainWindow):
     def setup_file_buttons(self):
         self.current_file = QLabel("Choose a file to proceed.")
         self.current_file.setStyleSheet("font-size: 18px;")
+        self.current_file.setMaximumWidth(700)
         self.editor_layout.addRow(self.current_file)
 
         self.choose_button = QPushButton("Choose file")
         self.choose_button.clicked.connect(self.choose_audio_file)
+        self.choose_button.setMaximumWidth(700)
         self.editor_layout.addRow("Choose audio file:", self.choose_button)
 
     def choose_audio_file(self):
