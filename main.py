@@ -27,6 +27,7 @@ class MainWindow(QMainWindow):
         self.header = QLabel("<h1>Welcome to AudioGUI!</h1>")
         self.header.setFixedWidth(500)
         self.editor_layout.addRow(self.header)
+        
         self.setup_title_length_layout()
         self.setup_artist_layout()
         self.setup_album_year_layout()
@@ -34,28 +35,11 @@ class MainWindow(QMainWindow):
         self.setup_track_layout()
         self.setup_file_buttons()
 
+        # Metadata editor: thumbnail
         self.thumbnail_layout = QVBoxLayout()
         self.thumbnail_layout.setSpacing(20)
 
-        # Metadata editor: thumbnail
-        self.thumbnail_label = QLabel()
-        self.thumbnail_pixmap = QPixmap('clippy.jpeg')
-        self.thumbnail_label.setFixedSize(300, 300)
-        self.thumbnail_label.setScaledContents(True)
-        self.thumbnail_label.setPixmap(self.thumbnail_pixmap)
-        self.thumbnail_layout.addWidget(self.thumbnail_label)
-
-        thumbnail_button_layout = QHBoxLayout()
-        self.thumbnail_choose_button = QPushButton("Choose new")
-        self.thumbnail_choose_button.clicked.connect(self.choose_thumbnail)
-        thumbnail_button_layout.addWidget(self.thumbnail_choose_button)
-        self.thumbnail_previous_button = QPushButton("Previous thumbnail")
-        self.thumbnail_previous_button.clicked.connect(self.previous_thumbnail)
-        thumbnail_button_layout.addWidget(self.thumbnail_previous_button)
-        self.thumbnail_update_button = QPushButton("Update")
-        # TODO connect
-        thumbnail_button_layout.addWidget(self.thumbnail_update_button)
-        self.thumbnail_layout.addLayout(thumbnail_button_layout)
+        self.setup_thumbnail_layout()
 
         # Window
         main_layout.addLayout(self.editor_layout)
@@ -224,6 +208,29 @@ class MainWindow(QMainWindow):
         self.choose_button.setMaximumWidth(700)
         self.editor_layout.addRow("Choose audio file:", self.choose_button)
 
+    def setup_thumbnail_layout(self):
+        self.thumbnail_label = QLabel()
+        self.thumbnail_pixmap = QPixmap('clippy.jpeg')
+        self.thumbnail_label.setFixedSize(300, 300)
+        self.thumbnail_label.setScaledContents(True)
+        self.thumbnail_label.setPixmap(self.thumbnail_pixmap)
+        self.thumbnail_layout.addWidget(self.thumbnail_label)
+
+        thumbnail_button_layout = QHBoxLayout()
+        self.thumbnail_choose_button = QPushButton("Choose new")
+        self.thumbnail_choose_button.clicked.connect(self.choose_thumbnail)
+        thumbnail_button_layout.addWidget(self.thumbnail_choose_button)
+
+        self.thumbnail_previous_button = QPushButton("Previous thumbnail")
+        self.thumbnail_previous_button.clicked.connect(self.previous_thumbnail)
+        thumbnail_button_layout.addWidget(self.thumbnail_previous_button)
+
+        self.thumbnail_update_button = QPushButton("Update")
+        self.thumbnail_update_button.clicked.connect(self.update_thumbnail)
+        thumbnail_button_layout.addWidget(self.thumbnail_update_button)
+
+        self.thumbnail_layout.addLayout(thumbnail_button_layout)
+
     def choose_audio_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             None,
@@ -272,6 +279,9 @@ class MainWindow(QMainWindow):
                 track_info = f"Track {self.audio_track_number} / {self.audio_track_total}"
                 self.track.setText(track_info)
 
+            # TODO: Update thumbnail
+            self.update_thumbnail_auto()
+
     def choose_thumbnail(self):
         thumbnail_path, _ = QFileDialog.getOpenFileName(
             None,
@@ -286,6 +296,12 @@ class MainWindow(QMainWindow):
     def previous_thumbnail(self):
         if self.current_file.text() != "Choose a file to proceed.":
             self.thumbnail_label.setPixmap(self.thumbnail_pixmap)
+
+    def update_thumbnail_auto(self):
+        return
+
+    def update_thumbnail(self):
+        return
 
     def change_title(self):
         if (self.title_input.text() != "" and self.title_input.text() != "Edit title:" and self.audio is not None):
@@ -323,7 +339,7 @@ class MainWindow(QMainWindow):
             self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
     def change_disc_number(self):
-        if (self.disc_number_input.text() != "" and self.disc_number_input.text() != "Edit disc number:" and self.audio is not None and self.audio_disc_total != "Unknown"):
+        if (self.disc_number_input.text() != "" and self.disc_number_input.text() != "Edit disc number:" and self.audio is not None):
             self.audio["discnumber"] = self.disc_number_input.text()
             self.audio.save()
 
@@ -331,7 +347,7 @@ class MainWindow(QMainWindow):
             self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_disc_total(self):
-        if (self.disc_total_input.text() != "" and self.disc_total_input.text() != "Edit disc total:" and self.audio is not None and self.audio_disc_number != "Unknown"):
+        if (self.disc_total_input.text() != "" and self.disc_total_input.text() != "Edit disc total:" and self.audio is not None):
             self.audio["disctotal"] = self.disc_total_input.text()
             self.audio.save()
 
@@ -339,7 +355,7 @@ class MainWindow(QMainWindow):
             self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_track_number(self):
-        if (self.track_number_input.text() != "" and self.track_number_input.text() != "Edit track number:" and self.audio is not None and self.audio_track_total != "Unknown"):
+        if (self.track_number_input.text() != "" and self.track_number_input.text() != "Edit track number:" and self.audio is not None):
             self.audio["tracknumber"] = self.track_number_input.text()
             self.audio.save()
 
@@ -347,7 +363,7 @@ class MainWindow(QMainWindow):
             self.track.setText(f"Track {self.audio_track_number} / {self.audio_track_total}")
 
     def change_track_total(self):
-        if (self.track_total_input.text != "" and self.track_total_input.text() != "Edit track total:" and self.audio is not None and self.audio_track_number != "Unknown"):
+        if (self.track_total_input.text != "" and self.track_total_input.text() != "Edit track total:" and self.audio is not None):
             self.audio["tracktotal"] = self.track_total_input.text()
             self.audio.save()
 
