@@ -237,39 +237,39 @@ class MainWindow(QMainWindow):
 
             # Get file metadata
             self.audio = mutagen.File(file_path, easy = True)
-            self.audio_title = self.audio.get("title", ["Unknown Title"])
+            self.audio_title = self.audio.get("title", ["Unknown Title"])[0]
             self.minutes, self.seconds = divmod(self.audio.info.length, 60)
-            self.audio_artist = self.audio.get("artist", ["Unknown Artist"])
-            self.audio_album = self.audio.get("album", ["Unknown Album"])
-            self.audio_year = self.audio.get("date", ["Unknown Year"])
-            self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])
-            self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])
-            self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])
-            self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])
+            self.audio_artist = self.audio.get("artist", ["Unknown Artist"])[0]
+            self.audio_album = self.audio.get("album", ["Unknown Album"])[0]
+            self.audio_year = self.audio.get("date", ["Unknown Year"])[0]
+            self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])[0]
+            self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])[0]
+            self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])[0]
+            self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])[0]
 
             # Update labels
             if self.minutes < 10:
-                self.title_length.setText(f"Title: {self.audio_title[0]} (0{int(self.minutes)}:{round(self.seconds, 2)})")
+                self.title_length.setText(f"Title: {self.audio_title} (0{int(self.minutes)}:{round(self.seconds, 2)})")
             else:
-                self.title_length.setText(f"Title: {self.audio_title[0]} ({int(self.minutes)}:{round(self.seconds, 2)})")
+                self.title_length.setText(f"Title: {self.audio_title} ({int(self.minutes)}:{round(self.seconds, 2)})")
 
-            self.artist.setText(f"Artist: {self.audio_artist[0]}")
+            self.artist.setText(f"Artist: {self.audio_artist}")
 
             if self.audio_year[0] == "Unknown Year":
-                self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0]})")
+                self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year})")
             else:
-                self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0][:4]})")
+                self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
             if self.audio_disc_number == "Unknown" or self.audio_disc_total == "Unknown":
                 pass
             else:
-                disc_info = f"Disc {self.audio_disc_number[0]} / {self.audio_disc_total[0]}"
+                disc_info = f"Disc {self.audio_disc_number} / {self.audio_disc_total}"
                 self.disc.setText(disc_info)
 
             if self.audio_track_number == "Unknown" or self.audio_track_total == "Unknown":
                 pass
             else:
-                track_info = f"Track {self.audio_track_number[0]} / {self.audio_track_total[0]}"
+                track_info = f"Track {self.audio_track_number} / {self.audio_track_total}"
                 self.track.setText(track_info)
 
     def choose_thumbnail(self):
@@ -292,67 +292,67 @@ class MainWindow(QMainWindow):
             self.audio["title"] = self.title_input.text()
             self.audio.save()
 
-            self.audio_title = self.audio["title"]
+            self.audio_title = self.audio["title"][0]
             if self.minutes < 10:
-                self.title_length.setText(f"Title: {self.audio_title[0]} (0{int(self.minutes)}:{round(self.seconds, 2)})")
+                self.title_length.setText(f"Title: {self.audio_title} (0{int(self.minutes)}:{round(self.seconds, 2)})")
             else:
-                self.title_length.setText(f"Title: {self.audio_title[0]} ({int(self.minutes)}:{round(self.seconds, 2)})")
+                self.title_length.setText(f"Title: {self.audio_title} ({int(self.minutes)}:{round(self.seconds, 2)})")
 
     def change_artist(self):
         if (self.artist_input.text() != "" and self.artist_input.text() != "Edit artist:" and self.audio is not None):
             self.audio["artist"] = self.artist_input.text()
             self.audio.save()
 
-            self.audio_artist = self.audio["artist"]
-            self.artist.setText(f"Artist: {self.audio_artist[0]}")
+            self.audio_artist = self.audio["artist"][0]
+            self.artist.setText(f"Artist: {self.audio_artist}")
 
     def change_album(self):
         if (self.album_input.text() != "" and self.album_input.text() != "Edit album:" and self.audio is not None):
             self.audio["album"] = self.album_input.text()
             self.audio.save()
 
-            self.audio_album = self.audio["album"]
-            self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0]})")
+            self.audio_album = self.audio["album"][0]
+            self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
     def change_year(self):
         if (self.year_input.text() != "" and self.year_input.text() != "Edit year:" and self.audio is not None):
             self.audio["date"] = self.year_input.text()
             self.audio.save()
 
-            self.audio_year = self.audio["date"]
-            self.album_year.setText(f"Album: {self.audio_album[0]} ({self.audio_year[0][:4]})")
+            self.audio_year = self.audio["date"][0]
+            self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
     def change_disc_number(self):
         if (self.disc_number_input.text() != "" and self.disc_number_input.text() != "Edit disc number:" and self.audio is not None and self.audio_disc_total != "Unknown"):
             self.audio["discnumber"] = self.disc_number_input.text()
             self.audio.save()
 
-            self.audio_disc_number = self.audio["discnumber"]
-            self.disc.setText(f"Disc {self.audio_disc_number[0]} / {self.audio_disc_total[0]}")
+            self.audio_disc_number = self.audio["discnumber"][0]
+            self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_disc_total(self):
         if (self.disc_total_input.text() != "" and self.disc_total_input.text() != "Edit disc total:" and self.audio is not None and self.audio_disc_number != "Unknown"):
             self.audio["disctotal"] = self.disc_total_input.text()
             self.audio.save()
 
-            self.audio_disc_total = self.audio["disctotal"]
-            self.disc.setText(f"Disc {self.audio_disc_number[0]} / {self.audio_disc_total[0]}")
+            self.audio_disc_total = self.audio["disctotal"][0]
+            self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_track_number(self):
         if (self.track_number_input.text() != "" and self.track_number_input.text() != "Edit track number:" and self.audio is not None and self.audio_track_total != "Unknown"):
             self.audio["tracknumber"] = self.track_number_input.text()
             self.audio.save()
 
-            self.audio_track_number = self.audio["tracknumber"]
-            self.track.setText(f"Track {self.audio_track_number[0]} / {self.audio_track_total[0]}")
+            self.audio_track_number = self.audio["tracknumber"][0]
+            self.track.setText(f"Track {self.audio_track_number} / {self.audio_track_total}")
 
     def change_track_total(self):
         if (self.track_total_input.text != "" and self.track_total_input.text() != "Edit track total:" and self.audio is not None and self.audio_track_number != "Unknown"):
             self.audio["tracktotal"] = self.track_total_input.text()
             self.audio.save()
 
-            self.audio_track_total = self.audio["tracktotal"]
-            self.track.setText(f"Track {self.audio_track_number[0]} / {self.audio_track_total[0]}")
+            self.audio_track_total = self.audio["tracktotal"][0]
+            self.track.setText(f"Track {self.audio_track_number} / {self.audio_track_total}")
 
 # Holds event loop
 app = QApplication([])
