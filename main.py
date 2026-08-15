@@ -269,8 +269,12 @@ class MainWindow(QMainWindow):
             self.audio_year = self.audio.get("date", ["Unkn"])[0]
             self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])[0]
             self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])[0]
+            if "/" in self.audio_track_number:
+                self.audio_track_number, self.audio_track_total = self.audio_track_number.split("/", 1)
             self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])[0]
             self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])[0]
+            if "/" in self.audio_disc_number:
+                self.audio_disc_number, self.audio_disc_total = self.audio_disc_number.split("/", 1)
 
             self.update_labels()
 
