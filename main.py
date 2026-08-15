@@ -231,6 +231,24 @@ class MainWindow(QMainWindow):
 
         self.thumbnail_layout.addLayout(thumbnail_button_layout)
 
+    def update_labels(self):
+        self.title_length.setText(f"Title: {self.audio_title} ({self.hours:02d}:{self.minutes:02d}:{self.seconds:02d})")
+
+        self.artist.setText(f"Artist: {self.audio_artist}")
+
+        if self.audio_year == "Unkn":
+            self.album_year.setText(f"Album: {self.audio_album} (Unknown Year)")
+        else:
+            self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
+
+        disc_info = f"Disc {self.audio_disc_number} / {self.audio_disc_total}"
+        self.disc.setText(disc_info)
+
+        track_info = f"Track {self.audio_track_number} / {self.audio_track_total}"
+        self.track.setText(track_info)
+
+        self.update_thumbnail_auto()
+
     def choose_audio_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             None,
@@ -242,45 +260,19 @@ class MainWindow(QMainWindow):
         if file_path:
             self.current_file.setText(f"File: {file_path}")
 
-            # Get file metadata
             self.audio = mutagen.File(file_path, easy = True)
             self.audio_title = self.audio.get("title", ["Unknown Title"])[0]
-            self.minutes, self.seconds = divmod(self.audio.info.length, 60)
+            self.hours, remainder = divmod(int(self.audio.info.length), 3600)
+            self.minutes, self.seconds = divmod(remainder, 60)
             self.audio_artist = self.audio.get("artist", ["Unknown Artist"])[0]
             self.audio_album = self.audio.get("album", ["Unknown Album"])[0]
-            self.audio_year = self.audio.get("date", ["Unknown Year"])[0]
+            self.audio_year = self.audio.get("date", ["Unkn"])[0]
             self.audio_track_number = self.audio.get("tracknumber", ["Unknown"])[0]
             self.audio_track_total = self.audio.get("tracktotal", ["Unknown"])[0]
             self.audio_disc_number = self.audio.get("discnumber", ["Unknown"])[0]
             self.audio_disc_total = self.audio.get("disctotal", ["Unknown"])[0]
 
-            # Update labels
-            if self.minutes < 10:
-                self.title_length.setText(f"Title: {self.audio_title} (0{int(self.minutes)}:{round(self.seconds, 2)})")
-            else:
-                self.title_length.setText(f"Title: {self.audio_title} ({int(self.minutes)}:{round(self.seconds, 2)})")
-
-            self.artist.setText(f"Artist: {self.audio_artist}")
-
-            if self.audio_year[0] == "Unknown Year":
-                self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year})")
-            else:
-                self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
-
-            if self.audio_disc_number == "Unknown" or self.audio_disc_total == "Unknown":
-                pass
-            else:
-                disc_info = f"Disc {self.audio_disc_number} / {self.audio_disc_total}"
-                self.disc.setText(disc_info)
-
-            if self.audio_track_number == "Unknown" or self.audio_track_total == "Unknown":
-                pass
-            else:
-                track_info = f"Track {self.audio_track_number} / {self.audio_track_total}"
-                self.track.setText(track_info)
-
-            # TODO: Update thumbnail
-            self.update_thumbnail_auto()
+            self.update_labels()
 
     def choose_thumbnail(self):
         thumbnail_path, _ = QFileDialog.getOpenFileName(
