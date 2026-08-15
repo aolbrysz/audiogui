@@ -36,15 +36,26 @@ class MainWindow(QMainWindow):
         self.thumbnail_layout.setSpacing(20)
 
         # Metadata editor: thumbnail
-        thumbnail_label = QLabel()
-        thumbnail_pixmap = QPixmap('clippy.jpeg')
-        thumbnail_label.setFixedSize(300, 300)
-        thumbnail_label.setScaledContents(True)
-        thumbnail_label.setPixmap(thumbnail_pixmap)
-        self.thumbnail_layout.addWidget(thumbnail_label)
+        self.thumbnail_label = QLabel()
+        self.thumbnail_pixmap = QPixmap('clippy.jpeg')
+        self.thumbnail_label.setFixedSize(300, 300)
+        self.thumbnail_label.setScaledContents(True)
+        self.thumbnail_label.setPixmap(self.thumbnail_pixmap)
+        self.thumbnail_layout.addWidget(self.thumbnail_label)
 
-        self.thumbnail_choose_button = QPushButton("Choose new thumbnail")
-        self.thumbnail_layout.addWidget(self.thumbnail_choose_button)
+        thumbnail_button_layout = QHBoxLayout()
+        self.thumbnail_choose_button = QPushButton("Choose new")
+        # TODO connect
+        thumbnail_button_layout.addWidget(self.thumbnail_choose_button)
+        self.thumbnail_previous_button = QPushButton("Previous thumbnail")
+        # TODO connect
+        thumbnail_button_layout.addWidget(self.thumbnail_previous_button)
+        self.thumbnail_update_button = QPushButton("Update")
+        # TODO connect
+        thumbnail_button_layout.addWidget(self.thumbnail_update_button)
+        self.thumbnail_layout.addLayout(thumbnail_button_layout)
+
+
 
         # Window
         main_layout.addLayout(self.editor_layout)
@@ -214,18 +225,18 @@ class MainWindow(QMainWindow):
         self.editor_layout.addRow("Choose audio file:", self.choose_button)
 
     def choose_audio_file(self):
-        file_path = QFileDialog.getOpenFileName(
+        file_path, _ = QFileDialog.getOpenFileName(
             None,
             "Choose audio file:",
             "",
-            "Audio Files (*.flac *.mp3 *.ogg *.m4a *.wav)"
+            "Audio Files (*.flac *.mp3 *.ogg *.m4a *.wav);;All Files (*)"
         )
 
-        if file_path[0]:
-            self.current_file.setText(f"File: {file_path[0]}")
+        if file_path:
+            self.current_file.setText(f"File: {file_path}")
 
             # Get file metadata
-            self.audio = mutagen.File(file_path[0], easy = True)
+            self.audio = mutagen.File(file_path, easy = True)
             self.audio_title = self.audio.get("title", ["Unknown Title"])
             self.minutes, self.seconds = divmod(self.audio.info.length, 60)
             self.audio_artist = self.audio.get("artist", ["Unknown Artist"])
@@ -260,6 +271,9 @@ class MainWindow(QMainWindow):
             else:
                 track_info = f"Track {self.audio_track_number[0]} / {self.audio_track_total[0]}"
                 self.track.setText(track_info)
+
+    def choose_thumbnail(self):
+        return
 
     def change_title(self):
         if (self.title_input.text() != "" and self.title_input.text() != "Edit title:" and self.audio is not None):
