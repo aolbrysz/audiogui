@@ -1,6 +1,8 @@
 import sys
 import mutagen
-from mutagen.flac import FLAC
+from mutagen.mp3 import MP3
+from mutagen.id3 import APIC
+from mutagen.flac import FLAC, Picture
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QPushButton, QFormLayout, QVBoxLayout, QHBoxLayout, QSlider, QFileDialog, QLineEdit
 from PyQt6.QtCore import QSize
 from PyQt6.QtGui import QPixmap
@@ -45,17 +47,15 @@ class MainWindow(QMainWindow):
 
         thumbnail_button_layout = QHBoxLayout()
         self.thumbnail_choose_button = QPushButton("Choose new")
-        # TODO connect
+        self.thumbnail_choose_button.clicked.connect(self.choose_thumbnail)
         thumbnail_button_layout.addWidget(self.thumbnail_choose_button)
         self.thumbnail_previous_button = QPushButton("Previous thumbnail")
-        # TODO connect
+        self.thumbnail_previous_button.clicked.connect(self.previous_thumbnail)
         thumbnail_button_layout.addWidget(self.thumbnail_previous_button)
         self.thumbnail_update_button = QPushButton("Update")
         # TODO connect
         thumbnail_button_layout.addWidget(self.thumbnail_update_button)
         self.thumbnail_layout.addLayout(thumbnail_button_layout)
-
-
 
         # Window
         main_layout.addLayout(self.editor_layout)
@@ -273,7 +273,19 @@ class MainWindow(QMainWindow):
                 self.track.setText(track_info)
 
     def choose_thumbnail(self):
-        return
+        thumbnail_path, _ = QFileDialog.getOpenFileName(
+            None,
+            "Choose thumbnail",
+            "",
+            "Image Files (*.png *.jpg *.jpeg)"
+            )
+        if thumbnail_path and self.current_file.text() != "Choose a file to proceed.":
+            temp_pixmap = QPixmap(thumbnail_path)
+            self.thumbnail_label.setPixmap(temp_pixmap)
+
+    def previous_thumbnail(self):
+        if self.current_file.text() != "Choose a file to proceed.":
+            self.thumbnail_label.setPixmap(self.thumbnail_pixmap)
 
     def change_title(self):
         if (self.title_input.text() != "" and self.title_input.text() != "Edit title:" and self.audio is not None):
