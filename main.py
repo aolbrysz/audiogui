@@ -300,8 +300,9 @@ class MainWindow(QMainWindow):
         return
 
     def change_title(self):
-        if (self.title_input.text() != "" and self.title_input.text() != "Edit title:" and self.audio is not None):
-            self.audio["title"] = self.title_input.text()
+        text = self.title_input.text()
+        if (text != "" and text != "Edit title:" and self.audio is not None):
+            self.audio["title"] = text
             self.audio.save()
 
             self.audio_title = self.audio["title"][0]
@@ -311,56 +312,63 @@ class MainWindow(QMainWindow):
                 self.title_length.setText(f"Title: {self.audio_title} ({int(self.minutes)}:{round(self.seconds, 2)})")
 
     def change_artist(self):
-        if (self.artist_input.text() != "" and self.artist_input.text() != "Edit artist:" and self.audio is not None):
-            self.audio["artist"] = self.artist_input.text()
+        text = self.artist_input.text()
+        if (text != "" and text != "Edit artist:" and self.audio is not None):
+            self.audio["artist"] = text
             self.audio.save()
 
             self.audio_artist = self.audio["artist"][0]
             self.artist.setText(f"Artist: {self.audio_artist}")
 
     def change_album(self):
-        if (self.album_input.text() != "" and self.album_input.text() != "Edit album:" and self.audio is not None):
-            self.audio["album"] = self.album_input.text()
+        text = self.album_input.text()
+        if (text != "" and text != "Edit album:" and self.audio is not None):
+            self.audio["album"] = text
             self.audio.save()
 
             self.audio_album = self.audio["album"][0]
             self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
     def change_year(self):
-        if (self.year_input.text() != "" and self.year_input.text() != "Edit year:" and self.audio is not None):
-            self.audio["date"] = self.year_input.text()
+        text = self.year_input.text()
+        if (text != "" and text != "Edit year:" and self.audio is not None):
+            self.audio["date"] = text
             self.audio.save()
 
             self.audio_year = self.audio["date"][0]
             self.album_year.setText(f"Album: {self.audio_album} ({self.audio_year[:4]})")
 
     def change_disc_number(self):
-        if (self.disc_number_input.text() != "" and self.disc_number_input.text() != "Edit disc number:" and self.audio is not None):
-            self.audio["discnumber"] = self.disc_number_input.text()
+        text = self.disc_number_input.text()
+        if (text != "" and text != "Edit disc number:" and self.audio is not None):
+            self.audio["discnumber"] = text
             self.audio.save()
 
             self.audio_disc_number = self.audio["discnumber"][0]
             self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_disc_total(self):
-        if (self.disc_total_input.text() != "" and self.disc_total_input.text() != "Edit disc total:" and self.audio is not None):
-            self.audio["disctotal"] = self.disc_total_input.text()
+        text = self.disc_total_input.text()
+        if (text != "" and text != "Edit disc total:" and self.audio is not None):
+            self.audio["disctotal"] = text
             self.audio.save()
 
             self.audio_disc_total = self.audio["disctotal"][0]
             self.disc.setText(f"Disc {self.audio_disc_number} / {self.audio_disc_total}")
 
     def change_track_number(self):
-        if (self.track_number_input.text() != "" and self.track_number_input.text() != "Edit track number:" and self.audio is not None):
-            self.audio["tracknumber"] = self.track_number_input.text()
+        text = self.track_number_input.text()
+        if (text != "" and text != "Edit track number:" and self.audio is not None):
+            self.audio["tracknumber"] = text
             self.audio.save()
 
             self.audio_track_number = self.audio["tracknumber"][0]
             self.track.setText(f"Track {self.audio_track_number} / {self.audio_track_total}")
 
     def change_track_total(self):
-        if (self.track_total_input.text != "" and self.track_total_input.text() != "Edit track total:" and self.audio is not None):
-            self.audio["tracktotal"] = self.track_total_input.text()
+        text = self.track_total_input.text
+        if (text != "" and text != "Edit track total:" and self.audio is not None):
+            self.audio["tracktotal"] = text
             self.audio.save()
 
             self.audio_track_total = self.audio["tracktotal"][0]
