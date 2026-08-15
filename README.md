@@ -5,10 +5,9 @@
 A minimalist desktop application built in Python (PyQt6) for reading and editing metadata tags of audio files.
 
 ## Features
-- View and edit metadata tags (title, artist, album) of .flac and .wav files
+- View and edit metadata tags (title, artist, album) of mp3, flac and wav files (and possibly more formats!)
 
 ## Roadmap
-- Support for .mp3 and other formats (in progress)
 - View and edit thumbnails / album covers (in progress)
 - Implement built-in file system explorer
 - Replace placeholder image
