@@ -9,11 +9,9 @@ A minimalist desktop application built in Python (PyQt6) for reading and editing
 - .flac and .wav files supported, among others
 
 ## Roadmap
-- Fix bug in mp3 support
+- mp3 file support
 - View and edit thumbnails / album covers (in progress)
-- Implement built-in file system explorer
 - Replace placeholder image
-- Increase aesthetic value of app
 
 ## Tech Stack
 - Python 3
